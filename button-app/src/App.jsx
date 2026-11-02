@@ -1,34 +1,35 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
+function saveToServer() {
+  return new Promise((resolve) => setTimeout(resolve, 2000))
+}
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [name, setName] = useState('')
+  const [message, setMessage] = useState('')
+  const [requests, setRequests] = useState(0)
+
+  async function handleSave() {
+    setMessage('')
+    setRequests((requests) => requests + 1)
+    await saveToServer()
+    setMessage(`Saved "${name}"`)
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
+    <div className="card">
+      <h1>Profile settings</h1>
+      <p>
+        <label>
+          Display name{' '}
+          <input value={name} onChange={(e) => setName(e.target.value)} />
+        </label>
       </p>
-    </>
+      <button onClick={handleSave}>Save</button>
+      {message && <p>{message}</p>}
+      <p className="read-the-docs">Save requests sent: {requests}</p>
+    </div>
   )
 }
 

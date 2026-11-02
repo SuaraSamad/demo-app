@@ -1,0 +1,47 @@
+FIX 1 - App.jsx: add a loading state
+Paste on a new line under:  const [requests, setRequests] = useState(0)
+
+  const [loading, setLoading] = useState(false)
+
+
+FIX 2 - App.jsx: turn loading on and off
+Select the whole handleSave function and replace it with:
+
+  async function handleSave() {
+    setLoading(true)
+    setMessage('')
+    setRequests((requests) => requests + 1)
+    await saveToServer()
+    setMessage(`Saved "${name}"`)
+    setLoading(false)
+  }
+
+
+FIX 3 - App.jsx: disable the button and show the loading icon
+Select this line:  <button onClick={handleSave}>Save</button>
+and replace it with:
+
+      <button onClick={handleSave} disabled={loading}>
+        {loading && <span className="spinner"></span>}
+        {loading ? 'Saving...' : 'Save'}
+      </button>
+
+
+FIX 4 - App.css: the spinning loading icon
+Paste at the very bottom of App.css:
+
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  vertical-align: middle;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
